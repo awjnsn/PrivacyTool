@@ -2,12 +2,17 @@ import java.awt.Color;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.RandomAccessFile;
+
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -82,8 +87,13 @@ class PrivacyPanel extends JPanel {
 	}
 
 	public void removeExif(File f){
-		System.out.println(f.getName());
-		System.out.println(f.toString());
+		try{
+			BufferedImage b = ImageIO.read(f);
+			ImageIO.write(b, "jpg", f);
+		}
+		catch(Exception e){
+			System.out.println("Privacy tool failed to clean the image!");
+		}
 	}
 	
 	private class chooseFileListener implements ActionListener {
