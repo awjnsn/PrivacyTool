@@ -1,5 +1,6 @@
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,12 +15,14 @@ import javax.swing.JPanel;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 //http://stackoverflow.com/questions/11922152/jfilechooser-to-open-multiple-txt-files
+//http://stackoverflow.com/questions/2380314/how-do-i-set-a-jlabels-background-color 4-30
+//http://stackoverflow.com/questions/13038411/how-to-fit-image-size-to-jframe-size 5-2
 //Added file select 4-21, buttons added week earlier
 
 public class PrivacyTool {
 	public static void main(String[] args) {
 		JFrame f = new JFrame("Privacy Tool");
-		f.setSize(512, 512);
+		f.setSize(392, 512);
 		f.setLocation(0, 0);
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.setContentPane(new PrivacyPanel());
@@ -35,8 +38,8 @@ class PrivacyPanel extends JPanel {
 	File currentFile;
 	String[] fileNames;
 	JLabel currentSelection;
-	//JLabel previewImageLabel;
-	//ImageIcon previewImageIcon;
+	JLabel imageArea;
+	int currentPos = 0;
 	
 	public PrivacyPanel() {
 		setLayout(null);
@@ -47,14 +50,15 @@ class PrivacyPanel extends JPanel {
 		JButton singleDeleteButton = new JButton("Delete One");
 		JButton allDeleteButton = new JButton("Delete All");
 		currentSelection = new JLabel("Please select a file / files.");
+		imageArea = new JLabel();
 		
-		chooseFileButton.setBounds(0,448,128,32);
-		leftButton.setBounds(0,0,1,1);
-		rightButton.setBounds(0,0,1,1);
-		singleDeleteButton.setBounds(0,0,0,0);
-		allDeleteButton.setBounds(0,0,0,0);
-		currentSelection.setBounds(128,448,384,32);
-		//previewImageLabel.setBounds(0,0,10,10);
+		chooseFileButton.setBounds(8,448,128,32);//
+		leftButton.setBounds(8,392,128,32);
+		rightButton.setBounds(256,392,128,32);
+		singleDeleteButton.setBounds(132,392,128,32);
+		allDeleteButton.setBounds(132,416,128,32);
+		currentSelection.setBounds(136,448,256,32);//
+		imageArea.setBounds(16, 16, 360, 360);//
 		
 		chooseFileButton.addActionListener(new chooseFileListener());
 		leftButton.addActionListener(new leftListener());
@@ -62,16 +66,31 @@ class PrivacyPanel extends JPanel {
 		singleDeleteButton.addActionListener(new singleDeleteListener());
 		allDeleteButton.addActionListener(new allDeleteListener());
 		
+		imageArea.setOpaque(true);
+		imageArea.setBackground(Color.LIGHT_GRAY);
+		
 		add(chooseFileButton);
 		add(currentSelection);
 		add(leftButton);
 		add(rightButton);
 		add(singleDeleteButton);
 		add(allDeleteButton);
-		//add(previewImageLabel);
+		add(imageArea);
 		
 		f.setMultiSelectionEnabled(true);
 		f.setFileFilter(new FileNameExtensionFilter("JPEG Images", "jpg"));
+	}
+	
+	public void setPreview(File f){
+		Image img = new ImageIcon(f.toString()).getImage();
+		Image scaledImg = img.getScaledInstance(360, 360, Image.SCALE_FAST);
+		imageArea.setIcon(new ImageIcon(scaledImg));
+	}
+	
+	public void updatePreview(){
+		currentFile = selectedFiles[currentPos];
+		setPreview(currentFile);
+		currentSelection.setText(currentFile.getName());
 	}
 
 	private class chooseFileListener implements ActionListener {
@@ -81,19 +100,32 @@ class PrivacyPanel extends JPanel {
 				selectedFiles = f.getSelectedFiles();
 			}
 			currentSelection.setText(selectedFiles[0].getName());
-			currentFile = selectedFiles[0];
+			currentPos = 0;
+			updatePreview();
 		}
 	}
 	
 	private class leftListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			
+			if(currentPos == 0){
+				currentPos = selectedFiles.length - 1;
+			}
+			else{
+				currentPos--;
+			}
+			updatePreview();
 		}
 	}
 	
 	private class rightListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			
+			if(currentPos == selectedFiles.length - 1){
+				currentPos = 0;
+			}
+			else{
+				currentPos++;
+			}
+			updatePreview();
 		}
 	}
 	
