@@ -1,11 +1,8 @@
 import java.awt.Color;
-import java.awt.GridLayout;
 import java.awt.Image;
-import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -13,11 +10,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.filechooser.FileNameExtensionFilter;
-
-//http://stackoverflow.com/questions/11922152/jfilechooser-to-open-multiple-txt-files
-//http://stackoverflow.com/questions/2380314/how-do-i-set-a-jlabels-background-color 4-30
-//http://stackoverflow.com/questions/13038411/how-to-fit-image-size-to-jframe-size 5-2
-//Added file select 4-21, buttons added week earlier
 
 public class PrivacyTool {
 	public static void main(String[] args) {
@@ -81,25 +73,25 @@ class PrivacyPanel extends JPanel {
 		f.setFileFilter(new FileNameExtensionFilter("JPEG Images", "jpg"));
 	}
 	
-	public void setPreview(File f){
-		Image img = new ImageIcon(f.toString()).getImage();
-		Image scaledImg = img.getScaledInstance(360, 360, Image.SCALE_FAST);
-		imageArea.setIcon(new ImageIcon(scaledImg));
-	}
-	
 	public void updatePreview(){
 		currentFile = selectedFiles[currentPos];
-		setPreview(currentFile);
+		Image img = new ImageIcon(currentFile.toString()).getImage();
+		Image scaledImg = img.getScaledInstance(360, 360, Image.SCALE_FAST);
+		imageArea.setIcon(new ImageIcon(scaledImg));
 		currentSelection.setText(currentFile.getName());
 	}
 
+	public void removeExif(File f){
+		System.out.println(f.getName());
+		System.out.println(f.toString());
+	}
+	
 	private class chooseFileListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			int returnValue = f.showOpenDialog(PrivacyPanel.this);
 			if(returnValue == JFileChooser.APPROVE_OPTION){
 				selectedFiles = f.getSelectedFiles();
 			}
-			currentSelection.setText(selectedFiles[0].getName());
 			currentPos = 0;
 			updatePreview();
 		}
@@ -131,13 +123,15 @@ class PrivacyPanel extends JPanel {
 	
 	private class singleDeleteListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			
+			removeExif(currentFile);
 		}
 	}
 	
 	private class allDeleteListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			
+			for(int i = 0; i < selectedFiles.length; i++){
+				removeExif(selectedFiles[i]);
+			}
 		}
 	}
 }
