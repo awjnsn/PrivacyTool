@@ -1,3 +1,7 @@
+/**
+ * Privacy Tool
+ */
+
 import java.awt.Color;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -14,6 +18,7 @@ import javax.swing.JPanel;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class PrivacyTool {
+	//Opens panel
 	public static void main(String[] args) {
 		JFrame f = new JFrame("Privacy Tool");
 		f.setSize(392, 512);
@@ -27,7 +32,7 @@ public class PrivacyTool {
 
 class PrivacyPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
-	JFileChooser f = new JFileChooser();
+	JFileChooser fileFinder = new JFileChooser();
 	File[] selectedFiles;
 	File currentFile;
 	String[] fileNames;
@@ -35,6 +40,7 @@ class PrivacyPanel extends JPanel {
 	JLabel imageArea;
 	int currentPos = 0;
 
+	//Panel that holds the preview image and buttons
 	public PrivacyPanel() {
 		setLayout(null);
 
@@ -71,10 +77,14 @@ class PrivacyPanel extends JPanel {
 		add(allDeleteButton);
 		add(imageArea);
 
-		f.setMultiSelectionEnabled(true);
-		f.setFileFilter(new FileNameExtensionFilter("JPEG Images", "jpg"));
+		fileFinder.setMultiSelectionEnabled(true);
+		fileFinder.setFileFilter(new FileNameExtensionFilter("JPEG Images", "jpg"));
 	}
-
+	/*
+	 * Sets the current file to the file at the specified index in the file array
+	 * Updates the preview image
+	 * Updates the current selection text
+	 */
 	public void updatePreview() {
 		currentFile = selectedFiles[currentPos];
 		Image img = new ImageIcon(currentFile.toString()).getImage();
@@ -82,7 +92,7 @@ class PrivacyPanel extends JPanel {
 		imageArea.setIcon(new ImageIcon(scaledImg));
 		currentSelection.setText(currentFile.getName());
 	}
-
+	//Removes exit data from file by rewriting over file with only image data
 	public void removeExif(File f) {
 		try {
 			BufferedImage b = ImageIO.read(f);
@@ -91,18 +101,18 @@ class PrivacyPanel extends JPanel {
 			System.out.println("Privacy tool failed to clean the image!");
 		}
 	}
-
+	//Opens file selector when clicked
 	private class chooseFileListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			int returnValue = f.showOpenDialog(PrivacyPanel.this);
+			int returnValue = fileFinder.showOpenDialog(PrivacyPanel.this);
 			if (returnValue == JFileChooser.APPROVE_OPTION) {
-				selectedFiles = f.getSelectedFiles();
+				selectedFiles = fileFinder.getSelectedFiles();
 			}
 			currentPos = 0;
 			updatePreview();
 		}
 	}
-
+	//Moves left in the array of files, cycles to end of array at position 0
 	private class leftListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if (currentPos == 0) {
@@ -113,7 +123,7 @@ class PrivacyPanel extends JPanel {
 			updatePreview();
 		}
 	}
-
+	//Moves right in the array of files, cycles to 0 at position length - 1
 	private class rightListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if (currentPos == selectedFiles.length - 1) {
@@ -124,13 +134,13 @@ class PrivacyPanel extends JPanel {
 			updatePreview();
 		}
 	}
-
+	//Removes exif data from currently selected file
 	private class singleDeleteListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			removeExif(currentFile);
 		}
 	}
-
+	//Removes exif data from all files in the file array, starting at position 0
 	private class allDeleteListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			for (int i = 0; i < selectedFiles.length; i++) {
