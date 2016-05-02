@@ -4,15 +4,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.RandomAccessFile;
-
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -49,13 +46,13 @@ class PrivacyPanel extends JPanel {
 		currentSelection = new JLabel("Please select a file / files.");
 		imageArea = new JLabel();
 		
-		chooseFileButton.setBounds(8,448,128,32);//
+		chooseFileButton.setBounds(8,448,128,32);
 		leftButton.setBounds(8,392,128,32);
 		rightButton.setBounds(256,392,128,32);
 		singleDeleteButton.setBounds(132,392,128,32);
 		allDeleteButton.setBounds(132,416,128,32);
-		currentSelection.setBounds(136,448,256,32);//
-		imageArea.setBounds(16, 16, 360, 360);//
+		currentSelection.setBounds(136,448,256,32);
+		imageArea.setBounds(16, 16, 360, 360);
 		
 		chooseFileButton.addActionListener(new chooseFileListener());
 		leftButton.addActionListener(new leftListener());
