@@ -1,7 +1,7 @@
 # PrivacyTool
 TSA States Project 2016
 
-By: Alexander Johsnon, Preetham Kyanam
+By: Alexander Johnson, Preetham Kyanam
 
 Step 1: Clone Repo
 
