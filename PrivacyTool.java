@@ -49,13 +49,28 @@ class PrivacyPanel extends JPanel {
 		imageArea = new JLabel();
 
 		//Sets the locations and sizes of all buttons and labels
-		chooseFileButton.setBounds(8, 448, 128, 32);
-		leftButton.setBounds(8, 392, 128, 32);
-		rightButton.setBounds(256, 392, 128, 32);
-		singleDeleteButton.setBounds(132, 392, 128, 32);
-		allDeleteButton.setBounds(132, 416, 128, 32);
-		currentSelection.setBounds(136, 448, 256, 32);
-		imageArea.setBounds(16, 16, 360, 360);
+		String os = System.getProperty("os.name");
+		System.out.println(os);
+		
+		//Sets button sizes based on operating system
+		if(os.equals("Mac OS X")){
+			chooseFileButton.setBounds(8, 448, 128, 32);
+			leftButton.setBounds(8, 392, 128, 32);
+			rightButton.setBounds(256, 392, 128, 32);
+			singleDeleteButton.setBounds(132, 392, 128, 32);
+			allDeleteButton.setBounds(132, 416, 128, 32);
+			currentSelection.setBounds(136, 448, 256, 32);
+			imageArea.setBounds(16, 16, 360, 360);
+		}
+		else{
+			chooseFileButton.setBounds(5, 440, 128, 32);
+			leftButton.setBounds(5, 370, 128, 32);
+			rightButton.setBounds(253, 370, 128, 32);
+			singleDeleteButton.setBounds(129, 370, 128, 32);
+			allDeleteButton.setBounds(132, 405, 122, 32);
+			currentSelection.setBounds(133, 440, 256, 32);
+			imageArea.setBounds(13, 4, 360, 360);
+		}
 
 		//Adds action listeners to all buttons
 		chooseFileButton.addActionListener(new chooseFileListener());
