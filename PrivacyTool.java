@@ -47,13 +47,9 @@ class PrivacyPanel extends JPanel {
 		JButton allDeleteButton = new JButton("Delete All"); //Button to remove metadata from all images in the array selectedFiles
 		currentSelection = new JLabel("Please select a file / files.");
 		imageArea = new JLabel();
-
-		//Sets the locations and sizes of all buttons and labels
-		String os = System.getProperty("os.name");
-		System.out.println(os);
 		
-		//Sets button sizes based on operating system
-		if(os.equals("Mac OS X")){
+		//Sets button sizes based on operating system due to operating systems having different built in buttons
+		if(System.getProperty("os.name").equals("Mac OS X")){ 
 			chooseFileButton.setBounds(8, 448, 128, 32);
 			leftButton.setBounds(8, 392, 128, 32);
 			rightButton.setBounds(256, 392, 128, 32);
@@ -62,7 +58,7 @@ class PrivacyPanel extends JPanel {
 			currentSelection.setBounds(136, 448, 256, 32);
 			imageArea.setBounds(16, 16, 360, 360);
 		}
-		else{
+		else{ //If it is another operating system
 			chooseFileButton.setBounds(5, 440, 128, 32);
 			leftButton.setBounds(5, 370, 128, 32);
 			rightButton.setBounds(253, 370, 128, 32);
